@@ -31,17 +31,34 @@
   display: none;
 }
 
-html{
-  -webkit-text-size-adjust: 100%;
-}
 
+
+html {
+  -webkit-text-size-adjust: none;
+}
 
 button,
 select,
 input {
   appearance: none;
   -webkit-appearance: none;
+
+  background-color: #fff;
+  border: none;
+  outline: none;
 }
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:active,
+button:focus {
+  background-color: #fff;
+}
+
+
+
 
 .app {
   color: white;
