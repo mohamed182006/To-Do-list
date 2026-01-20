@@ -35,18 +35,19 @@ function App() {
   const [editing, setEditing] = useState("");
 
   // عرض التاريخ بشكل جميل
-const formatLocalDate = (dateValue) => {
-  if (!dateValue) return "";
-  const dateObj = new Date(dateValue);
-  return dateObj.toLocaleString("en-GB", {   // << هنا
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
+  const formatLocalDate = (dateValue) => {
+    if (!dateValue) return "";
+    const dateObj = new Date(dateValue);
+    return dateObj.toLocaleString("en-GB", {
+      // << هنا
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
   // حفظ التغييرات في localStorage
   useEffect(() => {
@@ -108,7 +109,7 @@ const formatLocalDate = (dateValue) => {
     const updated = task.map((t) =>
       t.id === editing
         ? { ...t, text: inputRef.current.value, date, priority }
-        : t
+        : t,
     );
     settask(updated);
     inputRef.current.value = "";

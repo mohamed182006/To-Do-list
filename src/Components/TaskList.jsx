@@ -10,10 +10,9 @@ function TaskList({
   img2,
   img3,
   img4,
-   editing,
+  editing,
   startEdit,
   saveEdit,
-
 }) {
   // جزء ترتيب المهام
 
@@ -44,9 +43,7 @@ function TaskList({
             img3={img3}
             img4={img4}
             priority={priority}
-
             editing={editing}
-     
             startEdit={startEdit}
             saveEdit={saveEdit}
           />
