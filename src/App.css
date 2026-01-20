@@ -31,34 +31,20 @@
   display: none;
 }
 
-
-
 html {
   -webkit-text-size-adjust: none;
 }
 
 button,
-select,
-input {
-  appearance: none;
-  -webkit-appearance: none;
+input[type="button"],
+input[type="submit"] {
+  -webkit-appearance: none !important;
+  appearance: none !important;
 
-  background-color: #fff;
-  border: none;
-  outline: none;
+  color: #fff !important;
+
+  border-radius: 0;
 }
-
-button {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:active,
-button:focus {
-  background-color: #fff;
-}
-
-
-
 
 .app {
   color: white;
@@ -73,7 +59,7 @@ button:focus {
 }
 .Head h1 {
   color: #c28cff;
-  font-weight: 400;
+  font-weight: bolder;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .Head img {
@@ -356,17 +342,19 @@ select {
 
   /* ================== Base ================== */
   .react-datepicker {
-    background-color: #000;
-    border: 2px solid #333;
-    border-radius: 10px;
-    box-shadow: #7a3cff 0 0 3px;
-    color: #fff;
-    position: relative;
-    z-index: 1000;
-    transform: scale(0.7); /* أصغر */
-    transform-origin: center;
-    padding: 8px;
-    width: 100% !important;
+    max-width: 320px;
+    width: auto;
+    transform: scale(0.8);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .react-datepicker,
+  .react-datepicker * {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   /* ================== Header ================== */
@@ -437,6 +425,8 @@ select {
   .react-datepicker__time-container {
     background-color: #000;
     border-left: 1px solid #333;
+    flex: 1 1 auto;  
+    flex-shrink: 0;
   }
 
   .react-datepicker__time-list {
