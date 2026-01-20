@@ -3,19 +3,28 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://mohamed182006.github.io/To-Do-list/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "vite build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@internationalized/date": "^3.10.0",
+    "@mui/material": "^7.3.7",
+    "@mui/x-date-pickers": "^8.25.0",
     "@react-aria/i18n": "^3.12.13",
     "@untitledui/icons": "^0.0.19",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.19",
     "react": "^19.2.0",
     "react-aria": "^3.44.0",
-    "react-datepicker": "^8.9.0",
+    "react-datepicker": "^8.10.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-stately": "^3.42.0"
@@ -28,6 +37,7 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
     "vite": "npm:rolldown-vite@7.2.5"
   },

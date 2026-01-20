@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import { useRef, useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import "./App.css";
 import img from "../src/assets/calendar.png";
@@ -12,94 +14,76 @@ import checkmark from "../src/assets/servicereceptionist-bell-2-418759.mp3";
 import Tabs from "./Components/Tabs";
 import TaskList from "./Components/TaskList";
 
-
 function App() {
   const [filter, setFilter] = useState("all");
-  const [task, settask] = useState([]);
-  const [date, setDate] = useState("");
+
+  // Lazy initialization لحل تحذير ESLint
+  const [task, settask] = useState(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      return JSON.parse(savedTasks).map((task) => ({
+        ...task,
+        date: task.date ? new Date(task.date) : null,
+      }));
+    }
+    return [];
+  });
+
+  const [date, setDate] = useState(null);
   const [priority, setPriority] = useState("Low");
   const inputRef = useRef();
-
   const [editing, setEditing] = useState("");
 
-
-  // مثال لو عايز تعرض التاريخ بشكل محلي جميل
-const formatLocalDate = (dateString) => {
-  const dateObj = new Date(dateString);
-  return dateObj.toLocaleString('en-US', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12:true,
+  // عرض التاريخ بشكل جميل
+const formatLocalDate = (dateValue) => {
+  if (!dateValue) return "";
+  const dateObj = new Date(dateValue);
+  return dateObj.toLocaleString("en-GB", {   // << هنا
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   });
 };
 
-  useEffect(() => {
-    const savedTasks = localStorage.getItem("tasks");
-
-    if (savedTasks) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      settask(JSON.parse(savedTasks));
-    }
-  }, []);
-
+  // حفظ التغييرات في localStorage
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(task));
   }, [task]);
 
   const handle = () => {
     const text = inputRef.current.value;
+    if (!text.trim() || !date) return;
 
-    // علشان ميضيفش حاجة فاضية
-    if (!text.trim() || !date.trim()) return;
-
-
-    const selectedDate = new Date(date);
     const now = new Date();
-
-     // لو التاريخ قبل اليوم، امنع الإضافة
-    if (selectedDate < now) {
-
-     toast("Please select a valid date !");
-
+    if (date < now) {
+      toast("Please select a valid date !");
       return;
-
     }
 
     const newItem = { id: Date.now(), completed: false, text, date, priority };
-
     settask([...task, newItem]);
-
     inputRef.current.value = "";
-
-    setDate("");
+    setDate(null);
     setPriority("Low");
   };
 
-  // عمل صوت عند اتمام المهمة
-
   const audio = new Audio(checkmark);
-
   const handleItemDone = (id) => {
     const newTodo = task.map((item) => {
-      if (item.id == id) {
-        if (!item.completed) {
-          audio.play(checkmark);
-        }
+      if (item.id === id) {
+        if (!item.completed) audio.play();
         return { ...item, completed: !item.completed };
       }
-
       return item;
     });
-
     settask(newTodo);
   };
 
   const handleDelet = (id) => {
     const newTodo = task.filter((item) => item.id !== id);
-
     settask(newTodo);
   };
 
@@ -113,13 +97,11 @@ const formatLocalDate = (dateString) => {
     if (filter === "completed") return item.completed;
   });
 
-  const startEdit = (task) => {
-    setEditing(task.id);
-
-    inputRef.current.value = task.text;
-
-    setDate(task.date);
-    setPriority(task.priority);
+  const startEdit = (taskItem) => {
+    setEditing(taskItem.id);
+    inputRef.current.value = taskItem.text;
+    setDate(taskItem.date ? new Date(taskItem.date) : null);
+    setPriority(taskItem.priority);
   };
 
   const saveEdit = () => {
@@ -128,20 +110,14 @@ const formatLocalDate = (dateString) => {
         ? { ...t, text: inputRef.current.value, date, priority }
         : t
     );
-
     settask(updated);
-
-    // رجع كل حاجة زي مكانت
-
     inputRef.current.value = "";
-    setDate("");
+    setDate(null);
     setPriority("Low");
-
     setEditing(null);
   };
 
   return (
-
     <div className="app">
       <div className="Head">
         <h1>To_Do_List</h1>
@@ -149,11 +125,14 @@ const formatLocalDate = (dateString) => {
       </div>
 
       <div className="add">
-        <input
+        {/* React DatePicker */}
+        <DatePicker
+          selected={date}
+          onChange={(d) => setDate(d)}
+          showTimeSelect
+          dateFormat="Pp"
           className="dateInput"
-          type="datetime-local"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          placeholderText="Select Date & Time"
         />
 
         <div className="flex">
@@ -200,17 +179,15 @@ const formatLocalDate = (dateString) => {
         saveEdit={saveEdit}
       />
 
-
-      <Toaster position="top-center" toastOptions={{
-
-        style:{
-
-           background: "#524566ff",
-                color: "white",
-        },
-
-      }}/>
-
+      <Toaster
+        position="top-center"
+        toastOptions={{
+          style: {
+            background: "#524566ff",
+            color: "white",
+          },
+        }}
+      />
     </div>
   );
 }
