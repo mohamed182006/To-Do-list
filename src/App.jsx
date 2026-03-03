@@ -121,7 +121,7 @@ function App() {
   return (
     <div className="app">
       <div className="Head">
-        <h1>To_Do_List</h1>
+        <h1>To_Do</h1>
         <img src={img} alt="To_Do_List" />
       </div>
 
