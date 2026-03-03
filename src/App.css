@@ -84,7 +84,7 @@ input[type="submit"] {
   cursor: pointer;
   padding: 10px 50px;
   background-color: #8f4bff;
-  /* background: linear-gradient(90deg, #c7fff6 5%, #3b9bd6 100%); */
+
 }
 
 .add .taskInput {
@@ -190,7 +190,7 @@ input:focus {
 }
 
 .tabs button.activeTab {
-  /* background-color: #3d9dd4; */
+
   background-color: rgb(154, 46, 255);
 }
 
